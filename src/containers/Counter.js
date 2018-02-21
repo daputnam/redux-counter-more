@@ -13,9 +13,9 @@ class Counter extends React.Component {
     return (
       <div>
         <h1>Counter Plus</h1>
-        <button onClick={this.increment}>Increment</button>
+        <button onClick={this.props.increment}>Increment</button>
         {this.props.count}
-        <button onClick={this.decrement}>Decrement</button>
+        <button onClick={this.props.decrement}>Decrement</button>
       </div>
     )
   }
@@ -25,4 +25,9 @@ const mapStateToProps = (state) => ({
   count: state.count
 });
 
-export default connect(mapStateToProps)(Counter);
+const mapDispatchToProps = (dispatch) => ({
+  increment: () => dispatch({ type: "INCREMENT" }),
+  decrement: () => dispatch({ type: "DECREMENT" })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
