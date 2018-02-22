@@ -1,18 +1,34 @@
 const initialState = {
-  count: 0
+  counts: [0, 18, -2]
 }
 
 function reducer(state = initialState, action) {
+  console.log(action)
   switch (action.type) {
     case "INCREMENT":
       return {
         ...state,
-        count: state.count + 1
+        counts: state.counts.map((counter, index) => {
+          if (action.payload === index) {
+            return counter + 1
+          }
+          return counter
+        })
       }
     case "DECREMENT":
       return {
         ...state,
-        count: state.count - 1
+        counts: state.counts.map((counter, index) => {
+          if (action.payload === index) {
+            return counter - 1
+          }
+          return counter
+        })
+      }
+    case "ADD_COUNTER":
+      return {
+        ...state,
+        counts: [...state.counts, 0]
       }
     default:
       return state;

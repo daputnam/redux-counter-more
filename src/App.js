@@ -4,6 +4,11 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Counter from './containers/Counter';
 import reducer from './reducers/reducer'
+import AddCounter from './components/AddCounter'
+
+function addCounter() {
+  store.dispatch({ type: "ADD_COUNTER"})
+}
 
 const store = createStore(reducer);
 
@@ -12,7 +17,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <Counter />
+          {store.getState().counts.map((count,index)=> {
+            return <Counter index={index}/>
+          })}
+          <AddCounter addCounter={addCounter}/>
         </div>
       </Provider>
 
