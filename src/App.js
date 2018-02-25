@@ -1,31 +1,41 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 import Counter from './containers/Counter';
 import reducer from './reducers/reducer'
-import AddCounter from './components/AddCounter'
 
-function addCounter() {
-  store.dispatch({ type: "ADD_COUNTER"})
-}
+const mapStateToProps = (state) =>
+  ({
+    counts: state.counts,
+  });
 
-const store = createStore(reducer);
+// TODO: add this as an onClick handler to a button in your App component
+const mapDispatchToProps = (dispatch) =>
+  ({
+    addCounter: () => ({ type: 'ADD_COUNTER' }),
+  });
+
 
 class App extends Component {
   render() {
-    return (
-      <Provider store={store}>
-        <div className="App">
-          {store.getState().counts.map((count,index)=> {
-            return <Counter index={index}/>
-          })}
-          <AddCounter addCounter={addCounter}/>
-        </div>
-      </Provider>
 
+    const { counts } = this.props;
+
+    return (
+      <div className="App">
+        {
+          counts.map((count, index) =>
+            <Counter
+              index={index}
+              key={index}
+              count={count}
+            />
+          )
+        }
+      </div>
     );
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
