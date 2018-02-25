@@ -2,20 +2,35 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Counter extends React.Component {
-  increment = () => {
-    this.props.increment;
-  }
-  decrement = () => {
-    this.props.decrement;
-  }
-
   render() {
+
+    const {
+      index,
+      increment,
+      decrement,
+    } = this.props;
+
     return (
       <div>
-        <h1>Counter {this.props.index}</h1>
-        <button onClick={this.props.increment}>Increment</button>
-        {this.props.counts[this.props.index]}
-        <button onClick={this.props.decrement}>Decrement</button>
+        <h1>Counter {index}</h1>
+        <button onClick={() => increment(index)}>Increment</button>
+        {
+          /*
+          * If we need to reference this Counter's count,
+          * it's much simpler to just pass it in as a prop
+          * from where it's created in App.
+          */
+        }
+        {this.props.count}
+        {
+          /*
+           * Similarly, if we need to pass along an ownProp like `index`, it's
+           * much more straightforward to do so by simply referencing the prop `index`
+           * from within the render method - rather than trying to wrangle it in our
+           * `mapDispatchToProps` method.
+           */
+        }
+        <button onClick={() => decrement(index)}>Decrement</button>
       </div>
     )
   }
@@ -26,8 +41,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  increment: () => dispatch({ type: "INCREMENT", payload: ownProps.index}),
-  decrement: () => dispatch({ type: "DECREMENT", payload: ownProps.index })
+  increment: (index) => dispatch({ type: "INCREMENT", payload: index }),
+  decrement: (index) => dispatch({ type: "DECREMENT", payload: index })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
